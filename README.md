@@ -1,5 +1,3 @@
-# niche-website-server-side-taslima17
-niche-website-server-side-taslima17 created by GitHub Classroom
 
 # Jute Crafty
 
