@@ -76,6 +76,27 @@ async function run() {
             const result = await ordersCollection.find(query).toArray();
             res.send(result);
         })
+        //delete single order
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query); console.log(result)
+            res.send(result);
+        });
+        //update status
+        app.put('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+            console.log(id);
+
+            const query = { _id: ObjectId(id) };
+            const doc = { $set: { status: "approved" } }
+            console.log(doc)
+            const result = await ordersCollection.updateOne(query, doc);
+            console.log(result)
+            res.send(result);
+        })
         //find admin
         app.get('/user/:email', async (req, res) => {
             const email = req.params.email;
