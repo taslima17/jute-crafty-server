@@ -118,19 +118,35 @@ async function run() {
             res.json({ admin: isAdmin })
         });
         //insert users
-        app.post('/user', async (req, res) => {
+        app.put('/user', async (req, res) => {
             const data = req.body;
-            const result = await usersCollection.insertOne(data);
-            res.send(result);
+            const filter = { email: data.email }
+            const option = { upsert: true };
+            const doc = {
+                $set: data
+            }
+            const result = await usersCollection.updateOne(filter, doc, option)
+            res.json(result);
         })
+        // app.post('/user', async (req, res) => {
+        //     const data = req.body;
+        //     const doc = {
+        //         $set: data
+        //     }
+        //     const result = await usersCollection.updateOne(filter, doc, option)
+        //     res.json(result);
+        //     const result = await usersCollection.insertOne(data);
+        //     res.send(result);
+        // })
         //make admin
         app.put('/user/admin', async (req, res) => {
             const email = req.body.email;
 
             const filter = { email: email }
             const doc = { $set: { role: 'admin' } }
-            console.log(doc)
-            const result = await usersCollection.updateOne(filter, doc);
+            console.log(doc);
+            const option = { upsert: true };
+            const result = await usersCollection.updateOne(filter, doc, option);
             res.json(result)
         })
     } finally {
